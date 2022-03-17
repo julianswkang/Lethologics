@@ -40,9 +40,10 @@ body{
 .title p{
   font-size: 2rem;
   text-align: center;
+  margin-bottom: 0.5rem;
 }
 
-.tile.correct {
+/* .tile.correct {
   background-color: green;
   color: cornsilk;
 }
@@ -53,9 +54,41 @@ body{
 .tile.almost-correct{
   background-color: darkorange;
   color: cornsilk;
-}
+} */
 
 #game-message{
-  height: 100px;
+  height: 50px;
   width: 200px;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+#button {
+  background-color: darkslategray;
+  color: cornsilk;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  height: 30px;
+}
+
+.hidden {
+  display: none;
+}
+
+.tile.correct {
+  transition: background-color 0.5s ease;
+  background-color: green;
+  color: cornsilk;
+}
+.tile.incorrect {
+  transition: background-color 0.5s ease;
+  background-color: darkslategray;
+  color: cornsilk;
+}
+.tile.almost-correct{
+  transition: background-color 0.5s ease;
+  background-color: darkorange;
+  color: cornsilk;
 }
