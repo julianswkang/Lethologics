@@ -402,22 +402,24 @@ const dictionary = [
   "dream",
   "magic",
 ]
+
 let answer = randomWord();
 let letterCount = createLetterCount(answer);
-console.log(letterCount);
 let gameEnded = false;
 
 document.addEventListener('DOMContentLoaded', ()=>{
-
-  
   // console.log('event listener:', answer)
   document.addEventListener('keydown', (e) => {
     keyPressed(e.key);
-  })
+  });
 
-  
-  
+  //adding an event listener for the button to reload the page / reset the game
+  const button = document.getElementById('button');
+  button.addEventListener('click', () => {
+    location.reload();
+  })
 })
+
 /* -- FUNCTION THAT IS CALLED WHEN A KEY PRESS IS TRIGGERED */
 function keyPressed (keystroke) {
   // console.log(playersGuess.length);
@@ -437,11 +439,9 @@ function keyPressed (keystroke) {
     updateTiles('addition', keystroke.toUpperCase());
   }
   console.log(playersGuess.length);
-
 }
 
 /* -- FUNCTION TO UPDATE THE TILES IN THE HTML TILES BASED ON THE KEY */
-
 function updateTiles(updateType, key) {
   const currentRow = document.querySelector('.row.current-row');
   const tiles = currentRow.children;
@@ -453,16 +453,22 @@ function updateTiles(updateType, key) {
     if (playersGuess.length === 0) {
       tiles[playersGuess.length].textContent = "";
     }
+    //is it playersGuess.length - 1??
+    //if length is 5, and 'deletion' is hit, tiles[5]?? but when playersguess is 5 letters, tile[4] should be the last tile right?
+
+    //yes,I think the new length of the string is 4. The string updates from length 5 to 4 before we hit line 454
+    //we handled the stirng change on line 432
+    //ahhh okay now i remember this convo
+
+    //OKay, I just pushed it. Were you able to "add" the extension to your Chrome?
+    //i need to try it now
     else tiles[playersGuess.length].textContent = "";
   }
 
 }
+
 /* -- FUNCTION TO SUBMIT THE USER'S GUESS, WILL CHECK EACH LETTER WITH THE CHOSEN WORD
       AND WILL ASSIGN DIFFERENT COLORS TO THE TILES BASED ON CORRECTNESS -- */
-
-//creating shallow clone to mutate for each guess
-const countClone = Object.assign({},letterCount);
-
 function submitGuess (guess) {
   const currentRow = document.querySelector('.row.current-row');
   const tiles = currentRow.children; 
@@ -472,21 +478,27 @@ function submitGuess (guess) {
   if (currentRow.nextElementSibling && currentRow.nextElementSibling.getAttribute('id') !== 'game-message') nextRow = currentRow.nextElementSibling;
   else nextRow = undefined;
   // console.log('guess func:', answer)
-  console.log(countClone);
+  // console.log(countClone);
+
+  //creating shallow clone to mutate for each guess
+  const countClone = Object.assign({},letterCount);
+  //first iteration through to see which guesses were correct and in the correct spot
   for (let i = 0; i < 5; i++) {
     if (guess[i] === answer[i]) {
       tiles[i].setAttribute('class', 'tile correct');
       countClone[guess[i]]--;
     } 
   }
-
+  //second iteration through to see if the player's guess has letters that are in the answer word, but wrong spot
+    //if they are, will turn tile orange
+    //else, will turn tile dark gray
   for (let i = 0; i < 5; i++) {
     // if (guess[i] === answer[i]) {
     //   tiles[i].setAttribute('class', 'tile correct');
     //   countClone[guess[i]]--;
     // } 
     // else 
-    if (countClone[guess[i]] > 0) {
+    if (countClone[guess[i]] > 0 && guess[i] !== answer[i]) { //ADD LOGIC TO STOP THIS CONDITIONAL FROM OVERWRITING CORRECT LETTERS
       tiles[i].setAttribute('class', 'tile almost-correct');
       countClone[guess[i]]--;
     } else if (guess[i] !== answer[i] ){
@@ -501,21 +513,27 @@ function submitGuess (guess) {
     currentRow.setAttribute('class', 'row');
   }
   
+  const message = document.getElementById('game-message');
   if (answer === guess) {
-    console.log("you win")
+    message.textContent = 'Nice. You win!';
+    button.removeAttribute('class');
     gameEnded = true;
   }
 
   if (!nextRow && answer !== guess){
-    // document.querySelector('game-message')
+    message.textContent = 'Grab a dictionary, son! The word was: ' + answer;
+    button.removeAttribute('class');
     gameEnded = true;
-    console.log("Grab a dictionary, son! The word was: " + answer);
+    //console.log("Grab a dictionary, son! The word was: " + answer);
   }
 }
+
+
 /* -- FUNCTION TO CHOOSE A WORD FROM THE ARRAY OF WORDS -- */
 function randomWord(){
   return dictionary[Math.floor(Math.random() * (dictionary.length -1))];
 }
+
 
 /* -- CREATING A MAP OF THE LETTERS AND CORRESPONDING FREQUENCY OF OCCURENCE IN THE CHOSEN WORD -- */
 function createLetterCount(ans) {
