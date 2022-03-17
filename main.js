@@ -524,7 +524,7 @@ function submitGuess (guess) {
   }
 
   if (!nextRow && answer !== guess){
-    message.textContent = 'Grab a dictionary, son! The word was: ' + answer;
+    message.innerHTML = `Grab a dictionary, yo! The word was: <b>${answer}</b>`;
     button.removeAttribute('class');
     gameEnded = true;
     //console.log("Grab a dictionary, son! The word was: " + answer);
