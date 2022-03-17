@@ -493,10 +493,8 @@ function submitGuess (guess) {
       tiles[i].setAttribute('class', 'tile incorrect');
     }
   }
-
-
-
-  console.log(countClone);
+  
+  //console.log(countClone);
   if (nextRow != undefined){
     playersGuess = '';
     nextRow.setAttribute('class', 'row current-row');
