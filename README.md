@@ -1,4 +1,4 @@
-#Lethologics as a chrome extension
+##Lethologics 
 
 This chrome extension is called Lethologics. Lethologica is defined as the inability to remember a particular word or name. We believed that while this is a clone of Wordle, the word 'lethologica', was a better name simply because of the puzzling and frustrating nature of the game.
 
